@@ -2,3 +2,6 @@
 npm init -y
 
 npm install express 
+
+#Nos permite leer las variables de entornos dotenv
+npm install dotenv
