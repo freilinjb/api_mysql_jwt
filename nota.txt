@@ -5,3 +5,7 @@ npm install express
 
 #Nos permite leer las variables de entornos dotenv
 npm install dotenv
+
+En postman para usar el token
+es en Autorization y seleccionar en TYPE
+Beaner Token y pegar el Token hay y luego ya se puede realizar las operaciones
