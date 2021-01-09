@@ -1,0 +1,2 @@
+#Iniciar Un proyecto
+npm init -y
