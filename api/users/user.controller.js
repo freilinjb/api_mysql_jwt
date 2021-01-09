@@ -4,8 +4,10 @@ const {
   getUsers,
   updateUser,
   deleteUser,
+  getUserByEmail
 } = require("./user.service");
-const { genSaltSync, hashSync } = require("bcrypt");
+const { genSaltSync, hashSync, compareSync } = require("bcrypt");
+const { sign } = require('jsonwebtoken');
 
 module.exports = {
   createUser: (req, res) => {
@@ -96,4 +98,37 @@ module.exports = {
       });
     });
   },
+  login: (req, res) => {
+      const body = req.body;
+      getUserByEmail(body.email, (err, results) => {
+            if(err) { 
+              console.log(err)
+            }
+            if(!results) {
+                return res.json({
+                    success: 0,
+                    data: "Invalid email or password"
+                });
+            }
+            const result = compareSync(body.password, results.password);
+            console.log('result: ', results);
+            if(result) {
+                results.password = undefined;;
+                const jsontoken = sign({result: results}, "qw1234", {
+                    expiresIn: "1h"
+                });
+                return res.json({
+                    success: 1,
+                    message: "login successfully",
+                    token: jsontoken,
+                    data: results
+                });
+            } else {
+                return res.json({
+                    success: 0,
+                    data: "Invalid email or password"
+                });
+            }
+      })
+  }
 };
